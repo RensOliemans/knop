@@ -3,11 +3,19 @@ import sys
 import RPi.GPIO as gpio
 from mpd import MPDClient
 
+from time import sleep
 
+
+# ====================    Constants   ======================
 URL = 'spotify:track:6s9iK4Hf5nLhdDMCnkDV3T'  # Gay bar url
 URL = 'spotify:track:72lQhFytmSrEVWBiYUWkcR'  # ik moet zuipen
 
 INPUT_PIN = 23
+
+SLEEP_DURATION = 60 * 1  # 1 minute
+
+VOLUME_INCREASE = 0  # how much to increase the volume per button press
+# ====================    End Constants    ====================
 
 
 def setup_gpio():
@@ -20,10 +28,9 @@ def play():
     client = MPDClient()
     client.connect('localhost', 6600)
 
-    # add gay bar song to the queue (client.addid() returns the id of the added song)
-    gay_bar_id = client.addid(URL)
+    # add song to the queue (client.addid() returns the id of the added song)
+    song_id = client.addid(URL)
     status = client.status()
-
 
     try:
         current_song = int(status['song'])
@@ -34,12 +41,14 @@ def play():
 
     # get current random setting
     random = int(status['random'])
+    # you need to disable random, so the next song will actually be played next
+    # (otherwise doing client.next() will play a random song in the queue)
     client.random(0)
-    client.moveid(gay_bar_id, current_song + 1)
+    client.moveid(song_id, current_song + 1)
     client.next()
 
     volume = int(status['volume'])
-    new_volume = min(volume + 5, 100)
+    new_volume = min(volume + VOLUME_INCREASE, 100)
     client.setvol(new_volume)
 
     # restore previous random setting
@@ -61,11 +70,13 @@ def main():
             if channel:
                 print("Button press!")
                 play()
+                sleep(SLEEP_DURATION)
     except KeyboardInterrupt:
         gpio.cleanup()
         sys.exit(1)
 
+
 if __name__ == '__main__':
     # uncomment to make the button start at boot
-    main()
+    # main()
     pass
