@@ -3,8 +3,9 @@ import sys
 import RPi.GPIO as gpio
 from mpd import MPDClient
 
-# Gay bar url
-URL = 'spotify:track:6s9iK4Hf5nLhdDMCnkDV3T'
+
+URL = 'spotify:track:6s9iK4Hf5nLhdDMCnkDV3T'  # Gay bar url
+URL = 'spotify:track:72lQhFytmSrEVWBiYUWkcR'  # ik moet zuipen
 
 INPUT_PIN = 23
 
@@ -66,5 +67,5 @@ def main():
 
 if __name__ == '__main__':
     # uncomment to make the button start at boot
-    # main()
+    main()
     pass

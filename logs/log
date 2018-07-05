@@ -1,0 +1,19 @@
+Listening
+Button press!
+Button press!
+Button press!
+Button press!
+Button press!
+Button press!
+Button press!
+Button press!
+Button press!
+Button press!
+Traceback (most recent call last):
+  File "knop.py", line 69, in <module>
+    # uncomment to make the button start at boot
+  File "knop.py", line 62, in main
+    print("Button press!")
+  File "knop.py", line 28, in play
+    try:
+ValueError: invalid literal for int() with base 10: 'None'
